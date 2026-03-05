@@ -24,6 +24,8 @@ import logging
 import os
 import random
 
+import time
+
 import numpy as np
 import torch
 import torch.distributed as dist
@@ -168,6 +170,10 @@ def train(args, train_dataset, model, tokenizer):
     model.zero_grad()
     train_iterator = trange(int(args.num_train_epochs), desc="Epoch", disable=args.local_rank not in [-1, 0])
     set_seed(args)  # For reproducibility
+
+    # Timing: track per-iteration wall-clock times, skipping the first iteration
+    iter_times = []
+
     for _ in train_iterator:
         # Let DistributedSampler know the epoch for reshuffling
         if args.world_size > 1:
@@ -175,6 +181,8 @@ def train(args, train_dataset, model, tokenizer):
 
         epoch_iterator = tqdm(train_dataloader, desc="Iteration", disable=args.local_rank not in [-1, 0])
         for step, batch in enumerate(epoch_iterator):
+            iter_start = time.time()
+
             model.train()
             batch = tuple(t.to(args.device) for t in batch)
             inputs = {
@@ -209,15 +217,21 @@ def train(args, train_dataset, model, tokenizer):
 
             tr_loss += loss.item()
 
-            # Print loss for the first 5 minibatches (rank 0 only)
-            if global_step < 5 and args.local_rank in [-1, 0]:
-                print(f"Minibatch {global_step + 1}, Loss: {loss.item():.4f}")
+            # Per-node loss logging: every worker logs its own loss every iteration
+            print(f"[Rank {args.local_rank}] Step {global_step + 1}, Loss: {loss.item():.4f}")
 
             if (step + 1) % args.gradient_accumulation_steps == 0:
                 optimizer.step()
                 scheduler.step()
                 model.zero_grad()
                 global_step += 1
+
+            iter_end = time.time()
+            iter_elapsed = iter_end - iter_start
+
+            # Skip timing for the very first iteration (warmup / JIT effects)
+            if global_step > 1:
+                iter_times.append(iter_elapsed)
 
             if args.max_steps > 0 and global_step > args.max_steps:
                 epoch_iterator.close()
@@ -235,7 +249,14 @@ def train(args, train_dataset, model, tokenizer):
         if args.world_size > 1:
             dist.barrier()
 
+    # Report average time per iteration (excluding the first)
+    if iter_times:
+        avg_iter_time = sum(iter_times) / len(iter_times)
+        print(f"[Rank {args.local_rank}] Average time per iteration "
+              f"(excluding first): {avg_iter_time:.4f}s over {len(iter_times)} iterations")
+
     return global_step, tr_loss / global_step
+
 
 
 def evaluate(args, model, tokenizer, prefix=""):
