@@ -1,0 +1,81 @@
+ea7214@node-1:~/COS568-DistLM-SP26$ export GLUE_DIR=$HOME/glue_data
+export TASK_NAME=RTE
+export MASTER_IP=10.10.1.2
+
+python run_glue_4_ddp.py \
+  --model_type bert \
+  --model_name_or_path bert-base-cased \
+  --task_name $TASK_NAME \
+  --do_train --do_eval \
+  --data_dir $GLUE_DIR/$TASK_NAME \
+  --output_dir /tmp/$TASK_NAME/ \
+  --max_seq_length 128 \
+  --per_device_train_batch_size 16 \
+  --learning_rate 2e-5 \
+  --num_train_epochs 1 \
+  --overwrite_output_dir \
+  --master_ip $MASTER_IP \
+  --master_port 29502 \
+  --world_size 4 \
+  --local_rank 1
+03/06/2026 11:20:45 - WARNING - __main__ -   Process rank: 1, device: cpu, world_size: 4, 16-bits training: False
+/users/ea7214/.local/lib/python3.10/site-packages/pytorch_transformers/modeling_utils.py:539: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  state_dict = torch.load(resolved_archive_file, map_location='cpu')
+[Rank 1] Step 1, Loss: 0.8975
+/users/ea7214/.local/lib/python3.10/site-packages/pytorch_transformers/optimization.py:166: UserWarning: This overload of add_ is deprecated:
+        add_(Number alpha, Tensor other)
+Consider using one of the following signatures instead:
+        add_(Tensor other, *, Number alpha = 1) (Triggered internally at ../torch/csrc/utils/python_arg_parser.cpp:1642.)
+  exp_avg.mul_(beta1).add_(1.0 - beta1, grad)
+[Rank 1] Step 2, Loss: 0.7918
+[Rank 1] Step 3, Loss: 0.7262
+[Rank 1] Step 4, Loss: 0.6006
+[Rank 1] Step 5, Loss: 0.6716
+[Rank 1] Step 6, Loss: 0.6497
+[Rank 1] Step 7, Loss: 0.6817
+[Rank 1] Step 8, Loss: 0.7670
+[Rank 1] Step 9, Loss: 0.7427
+[Rank 1] Step 10, Loss: 0.6736
+[Rank 1] Step 11, Loss: 0.6865
+[Rank 1] Step 12, Loss: 0.7301
+[Rank 1] Step 13, Loss: 0.6975
+[Rank 1] Step 14, Loss: 0.6921
+[Rank 1] Step 15, Loss: 0.7272
+[Rank 1] Step 16, Loss: 0.6534
+[Rank 1] Step 17, Loss: 0.6618
+[Rank 1] Step 18, Loss: 0.7106
+[Rank 1] Step 19, Loss: 0.6821
+[Rank 1] Step 20, Loss: 0.6719
+[Rank 1] Step 21, Loss: 0.6581
+[Rank 1] Step 22, Loss: 0.6778
+[Rank 1] Step 23, Loss: 0.6345
+[Rank 1] Step 24, Loss: 0.6647
+[Rank 1] Step 25, Loss: 0.6871
+[Rank 1] Step 26, Loss: 0.6761
+[Rank 1] Step 27, Loss: 0.7045
+[Rank 1] Step 28, Loss: 0.7361
+[Rank 1] Step 29, Loss: 0.7227
+[Rank 1] Step 30, Loss: 0.6581
+[Rank 1] Step 31, Loss: 0.7170
+[Rank 1] Step 32, Loss: 0.6600
+[Rank 1] Step 33, Loss: 0.6641
+[Rank 1] Step 34, Loss: 0.7266
+[Rank 1] Step 35, Loss: 0.7094
+[Rank 1] Step 36, Loss: 0.6652
+[Rank 1] Step 37, Loss: 0.6682
+[Rank 1] Step 38, Loss: 0.6898
+[Rank 1] Step 39, Loss: 0.7070
+[Rank 1] Average time per iteration (excluding first): 2.9081s over 38 iterations
+[rank1]: Traceback (most recent call last):
+[rank1]:   File "/users/ea7214/COS568-DistLM-SP26/run_glue_4_ddp.py", line 522, in <module>
+[rank1]:     main()
+[rank1]:   File "/users/ea7214/COS568-DistLM-SP26/run_glue_4_ddp.py", line 509, in main
+[rank1]:     global_step, tr_loss = train(args, train_dataset, model, tokenizer)
+[rank1]:   File "/users/ea7214/COS568-DistLM-SP26/run_glue_4_ddp.py", line 267, in train
+[rank1]:     profiler.export_chrome_trace(chrome_path)
+[rank1]:   File "/users/ea7214/.local/lib/python3.10/site-packages/torch/profiler/profiler.py", line 230, in export_chrome_trace
+[rank1]:     return self.profiler.export_chrome_trace(path)
+[rank1]:   File "/users/ea7214/.local/lib/python3.10/site-packages/torch/autograd/profiler.py", line 459, in export_chrome_trace
+[rank1]:     self.kineto_results.save(path)  # type: ignore[union-attr]
+[rank1]: RuntimeError: Trace is already saved.
+ea7214@node-1:~/COS568-DistLM-SP26$ Connection terminated

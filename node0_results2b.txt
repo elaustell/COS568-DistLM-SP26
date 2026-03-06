@@ -1,0 +1,258 @@
+ea7214@node-0:~/COS568-DistLM-SP26$ export GLUE_DIR=$HOME/glue_data
+export TASK_NAME=RTE
+export MASTER_IP=10.10.1.2
+
+python run_glue_2b.py \
+  --model_type bert \
+  --model_name_or_path bert-base-cased \
+  --task_name $TASK_NAME \
+  --do_train --do_eval \
+  --data_dir $GLUE_DIR/$TASK_NAME \
+  --output_dir /tmp/$TASK_NAME/ \
+  --max_seq_length 128 \
+  --per_device_train_batch_size 16 \
+  --learning_rate 2e-5 \
+  --num_train_epochs 1 \
+  --overwrite_output_dir \
+  --master_ip $MASTER_IP \
+  --master_port 29502 \
+  --world_size 4 \
+  --local_rank 0
+03/06/2026 10:12:14 - WARNING - __main__ -   Process rank: 0, device: cpu, world_size: 4, 16-bits training: False
+03/06/2026 10:12:14 - INFO - pytorch_transformers.file_utils -   https://s3.amazonaws.com/models.huggingface.co/bert/bert-base-cased-config.json not found in cache or force_download set to True, downloading to /tmp/tmpdvook6ac
+100%|█████████████████████████████████████████████████████████████████████████████████████████████| 433/433 [00:00<00:00, 847077.25B/s]
+03/06/2026 10:12:15 - INFO - pytorch_transformers.file_utils -   copying /tmp/tmpdvook6ac to cache at /users/ea7214/.cache/torch/pytorch_transformers/b945b69218e98b3e2c95acf911789741307dec43c698d35fad11c1ae28bda352.9da767be51e1327499df13488672789394e2ca38b877837e52618a67d7002391
+03/06/2026 10:12:15 - INFO - pytorch_transformers.file_utils -   creating metadata file for /users/ea7214/.cache/torch/pytorch_transformers/b945b69218e98b3e2c95acf911789741307dec43c698d35fad11c1ae28bda352.9da767be51e1327499df13488672789394e2ca38b877837e52618a67d7002391
+03/06/2026 10:12:15 - INFO - pytorch_transformers.file_utils -   removing temp file /tmp/tmpdvook6ac
+03/06/2026 10:12:15 - INFO - pytorch_transformers.modeling_utils -   loading configuration file https://s3.amazonaws.com/models.huggingface.co/bert/bert-base-cased-config.json from cache at /users/ea7214/.cache/torch/pytorch_transformers/b945b69218e98b3e2c95acf911789741307dec43c698d35fad11c1ae28bda352.9da767be51e1327499df13488672789394e2ca38b877837e52618a67d7002391
+03/06/2026 10:12:15 - INFO - pytorch_transformers.modeling_utils -   Model config {
+  "architectures": [
+    "BertForMaskedLM"
+  ],
+  "attention_probs_dropout_prob": 0.1,
+  "finetuning_task": "rte",
+  "hidden_act": "gelu",
+  "hidden_dropout_prob": 0.1,
+  "hidden_size": 768,
+  "initializer_range": 0.02,
+  "intermediate_size": 3072,
+  "layer_norm_eps": 1e-12,
+  "max_position_embeddings": 512,
+  "model_type": "bert",
+  "num_attention_heads": 12,
+  "num_hidden_layers": 12,
+  "num_labels": 2,
+  "output_attentions": false,
+  "output_hidden_states": false,
+  "pad_token_id": 0,
+  "pruned_heads": {},
+  "torchscript": false,
+  "type_vocab_size": 2,
+  "vocab_size": 28996
+}
+
+03/06/2026 10:12:15 - INFO - pytorch_transformers.file_utils -   https://s3.amazonaws.com/models.huggingface.co/bert/bert-base-cased-vocab.txt not found in cache or force_download set to True, downloading to /tmp/tmp0bgy7ts2
+100%|██████████████████████████████████████████████████████████████████████████████████████| 213450/213450 [00:00<00:00, 3124233.80B/s]
+03/06/2026 10:12:15 - INFO - pytorch_transformers.file_utils -   copying /tmp/tmp0bgy7ts2 to cache at /users/ea7214/.cache/torch/pytorch_transformers/5e8a2b4893d13790ed4150ca1906be5f7a03d6c4ddf62296c383f6db42814db2.e13dbb970cb325137104fb2e5f36fe865f27746c6b526f6352861b1980eb80b1
+03/06/2026 10:12:15 - INFO - pytorch_transformers.file_utils -   creating metadata file for /users/ea7214/.cache/torch/pytorch_transformers/5e8a2b4893d13790ed4150ca1906be5f7a03d6c4ddf62296c383f6db42814db2.e13dbb970cb325137104fb2e5f36fe865f27746c6b526f6352861b1980eb80b1
+03/06/2026 10:12:15 - INFO - pytorch_transformers.file_utils -   removing temp file /tmp/tmp0bgy7ts2
+03/06/2026 10:12:15 - INFO - pytorch_transformers.tokenization_utils -   loading file https://s3.amazonaws.com/models.huggingface.co/bert/bert-base-cased-vocab.txt from cache at /users/ea7214/.cache/torch/pytorch_transformers/5e8a2b4893d13790ed4150ca1906be5f7a03d6c4ddf62296c383f6db42814db2.e13dbb970cb325137104fb2e5f36fe865f27746c6b526f6352861b1980eb80b1
+03/06/2026 10:12:15 - INFO - pytorch_transformers.file_utils -   https://s3.amazonaws.com/models.huggingface.co/bert/bert-base-cased-pytorch_model.bin not found in cache or force_download set to True, downloading to /tmp/tmpgkhavnxm
+100%|███████████████████████████████████████████████████████████████████████████████| 435779157/435779157 [00:17<00:00, 25171713.87B/s]
+03/06/2026 10:12:33 - INFO - pytorch_transformers.file_utils -   copying /tmp/tmpgkhavnxm to cache at /users/ea7214/.cache/torch/pytorch_transformers/35d8b9d36faaf46728a0192d82bf7d00137490cd6074e8500778afed552a67e5.3fadbea36527ae472139fe84cddaa65454d7429f12d543d80bfc3ad70de55ac2
+03/06/2026 10:12:34 - INFO - pytorch_transformers.file_utils -   creating metadata file for /users/ea7214/.cache/torch/pytorch_transformers/35d8b9d36faaf46728a0192d82bf7d00137490cd6074e8500778afed552a67e5.3fadbea36527ae472139fe84cddaa65454d7429f12d543d80bfc3ad70de55ac2
+03/06/2026 10:12:34 - INFO - pytorch_transformers.file_utils -   removing temp file /tmp/tmpgkhavnxm
+03/06/2026 10:12:34 - INFO - pytorch_transformers.modeling_utils -   loading weights file https://s3.amazonaws.com/models.huggingface.co/bert/bert-base-cased-pytorch_model.bin from cache at /users/ea7214/.cache/torch/pytorch_transformers/35d8b9d36faaf46728a0192d82bf7d00137490cd6074e8500778afed552a67e5.3fadbea36527ae472139fe84cddaa65454d7429f12d543d80bfc3ad70de55ac2
+/users/ea7214/.local/lib/python3.10/site-packages/pytorch_transformers/modeling_utils.py:539: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  state_dict = torch.load(resolved_archive_file, map_location='cpu')
+03/06/2026 10:12:42 - INFO - pytorch_transformers.modeling_utils -   Weights of BertForSequenceClassification not initialized from pretrained model: ['classifier.weight', 'classifier.bias']
+03/06/2026 10:12:42 - INFO - pytorch_transformers.modeling_utils -   Weights from pretrained model not used in BertForSequenceClassification: ['cls.predictions.bias', 'cls.predictions.transform.dense.weight', 'cls.predictions.transform.dense.bias', 'cls.predictions.decoder.weight', 'cls.seq_relationship.weight', 'cls.seq_relationship.bias', 'cls.predictions.transform.LayerNorm.weight', 'cls.predictions.transform.LayerNorm.bias']
+03/06/2026 10:12:42 - INFO - __main__ -   Training/evaluation parameters Namespace(data_dir='/users/ea7214/glue_data/RTE', model_type='bert', model_name_or_path='bert-base-cased', task_name='rte', output_dir='/tmp/RTE/', config_name='', tokenizer_name='', cache_dir='', max_seq_length=128, do_train=True, do_eval=True, do_lower_case=False, per_device_train_batch_size=16, per_device_eval_batch_size=8, gradient_accumulation_steps=1, learning_rate=2e-05, weight_decay=0.0, adam_epsilon=1e-08, max_grad_norm=1.0, num_train_epochs=1.0, max_steps=-1, warmup_steps=0, no_cuda=False, overwrite_output_dir=True, overwrite_cache=False, seed=42, fp16=False, fp16_opt_level='O1', local_rank=0, master_ip='10.10.1.2', master_port='29502', world_size=4, device=device(type='cpu'), n_gpu=0, output_mode='classification')
+03/06/2026 10:12:42 - INFO - __main__ -   Creating features from dataset file at /users/ea7214/glue_data/RTE
+03/06/2026 10:12:42 - INFO - utils_glue -   Writing example 0 of 2490
+03/06/2026 10:12:42 - INFO - utils_glue -   *** Example ***
+03/06/2026 10:12:42 - INFO - utils_glue -   guid: train-0
+03/06/2026 10:12:42 - INFO - utils_glue -   tokens: [CLS] No Weapons of Mass Des ##truction Found in Iraq Yet . [SEP] Weapons of Mass Des ##truction Found in Iraq . [SEP]
+03/06/2026 10:12:42 - INFO - utils_glue -   input_ids: 101 1302 20263 1104 8718 14177 17993 17107 1107 5008 6355 119 102 20263 1104 8718 14177 17993 17107 1107 5008 119 102 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+03/06/2026 10:12:42 - INFO - utils_glue -   input_mask: 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+03/06/2026 10:12:42 - INFO - utils_glue -   segment_ids: 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 1 1 1 1 1 1 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+03/06/2026 10:12:42 - INFO - utils_glue -   label: not_entailment (id = 1)
+03/06/2026 10:12:42 - INFO - utils_glue -   *** Example ***
+03/06/2026 10:12:42 - INFO - utils_glue -   guid: train-1
+03/06/2026 10:12:42 - INFO - utils_glue -   tokens: [CLS] A place of sorrow , after Pope John Paul II died , became a place of celebration , as Roman Catholic faithful gathered in downtown Chicago to mark the installation of new Pope Benedict XVI . [SEP] Pope Benedict XVI is the new leader of the Roman Catholic Church . [SEP]
+03/06/2026 10:12:42 - INFO - utils_glue -   input_ids: 101 138 1282 1104 17359 117 1170 4409 1287 1795 1563 1452 117 1245 170 1282 1104 7978 117 1112 2264 2336 12969 5260 1107 5215 2290 1106 4551 1103 8205 1104 1207 4409 12334 18406 119 102 4409 12334 18406 1110 1103 1207 2301 1104 1103 2264 2336 1722 119 102 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+03/06/2026 10:12:42 - INFO - utils_glue -   input_mask: 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+03/06/2026 10:12:42 - INFO - utils_glue -   segment_ids: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+03/06/2026 10:12:42 - INFO - utils_glue -   label: entailment (id = 0)
+03/06/2026 10:12:42 - INFO - utils_glue -   *** Example ***
+03/06/2026 10:12:42 - INFO - utils_glue -   guid: train-2
+03/06/2026 10:12:42 - INFO - utils_glue -   tokens: [CLS] Her ##ce ##pt ##in was already approved to treat the sick ##est breast cancer patients , and the company said , Monday , it will discuss with federal regulator ##s the possibility of pre ##s ##cribing the drug for more breast cancer patients . [SEP] Her ##ce ##pt ##in can be used to treat breast cancer . [SEP]
+03/06/2026 10:12:42 - INFO - utils_glue -   input_ids: 101 1430 2093 6451 1394 1108 1640 4092 1106 7299 1103 4809 2556 7209 4182 4420 117 1105 1103 1419 1163 117 6356 117 1122 1209 6265 1114 2877 27335 1116 1103 5417 1104 3073 1116 27362 1103 3850 1111 1167 7209 4182 4420 119 102 1430 2093 6451 1394 1169 1129 1215 1106 7299 7209 4182 119 102 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+03/06/2026 10:12:42 - INFO - utils_glue -   input_mask: 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+03/06/2026 10:12:42 - INFO - utils_glue -   segment_ids: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+03/06/2026 10:12:42 - INFO - utils_glue -   label: entailment (id = 0)
+03/06/2026 10:12:42 - INFO - utils_glue -   *** Example ***
+03/06/2026 10:12:42 - INFO - utils_glue -   guid: train-3
+03/06/2026 10:12:42 - INFO - utils_glue -   tokens: [CLS] Ju ##die Vivian , chief executive at Pro ##M ##edic ##a , a medical service company that helps sustain the 2 - year - old Vietnam Heart Institute in Ho Chi Minh City ( formerly Saigon ) , said that so far about 1 , 500 children have received treatment . [SEP] The previous name of Ho Chi Minh City was Saigon . [SEP]
+03/06/2026 10:12:42 - INFO - utils_glue -   input_ids: 101 23915 7782 14261 117 2705 3275 1120 5096 2107 24506 1161 117 170 2657 1555 1419 1115 6618 16974 1103 123 118 1214 118 1385 4357 4641 2024 1107 9800 11318 21481 1392 113 3147 27123 114 117 1163 1115 1177 1677 1164 122 117 2260 1482 1138 1460 3252 119 102 1109 2166 1271 1104 9800 11318 21481 1392 1108 27123 119 102 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+03/06/2026 10:12:42 - INFO - utils_glue -   input_mask: 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+03/06/2026 10:12:42 - INFO - utils_glue -   segment_ids: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+03/06/2026 10:12:42 - INFO - utils_glue -   label: entailment (id = 0)
+03/06/2026 10:12:42 - INFO - utils_glue -   *** Example ***
+03/06/2026 10:12:42 - INFO - utils_glue -   guid: train-4
+03/06/2026 10:12:42 - INFO - utils_glue -   tokens: [CLS] A man is due in court later charged with the murder 26 years ago of a teenager whose case was the first to be featured on BBC One ' s Crime ##watch . Cole ##tte Ara ##m , 16 , was walking to her boyfriend ' s house in Key ##worth , Nottinghamshire , on 30 October 1983 when she disappeared . Her body was later found in a field close to her home . Paul Stewart Hutchinson , 50 , has been charged with murder and is due before Nottingham magistrate ##s later . [SEP] Paul Stewart Hutchinson is accused of having stabbed a girl . [SEP]
+03/06/2026 10:12:42 - INFO - utils_glue -   input_ids: 101 138 1299 1110 1496 1107 2175 1224 4601 1114 1103 3513 1744 1201 2403 1104 170 10674 2133 1692 1108 1103 1148 1106 1129 2081 1113 3173 1448 112 188 10725 21200 119 4922 3786 25692 1306 117 1479 117 1108 3179 1106 1123 6508 112 188 1402 1107 7443 4189 117 21942 117 1113 1476 1357 2278 1165 1131 4712 119 1430 1404 1108 1224 1276 1107 170 1768 1601 1106 1123 1313 119 1795 5272 18322 117 1851 117 1144 1151 4601 1114 3513 1105 1110 1496 1196 11330 20261 1116 1224 119 102 1795 5272 18322 1110 4806 1104 1515 13699 170 1873 119 102 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+03/06/2026 10:12:42 - INFO - utils_glue -   input_mask: 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+03/06/2026 10:12:42 - INFO - utils_glue -   segment_ids: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+03/06/2026 10:12:42 - INFO - utils_glue -   label: not_entailment (id = 1)
+03/06/2026 10:12:49 - INFO - __main__ -   Saving features into cached file /users/ea7214/glue_data/RTE/cached_train_bert-base-cased_128_rte
+03/06/2026 10:12:52 - INFO - __main__ -   ***** Running training *****
+03/06/2026 10:12:52 - INFO - __main__ -     Num examples = 2490
+03/06/2026 10:12:52 - INFO - __main__ -     Num Epochs = 1
+03/06/2026 10:12:52 - INFO - __main__ -     Instantaneous batch size per device = 16
+03/06/2026 10:12:52 - INFO - __main__ -     Number of workers (world_size) = 4
+03/06/2026 10:12:52 - INFO - __main__ -     Total train batch size (per_device * world_size * grad_accum) = 64
+03/06/2026 10:12:52 - INFO - __main__ -     Gradient Accumulation steps = 1
+03/06/2026 10:12:52 - INFO - __main__ -     Total optimization steps = 39
+Epoch:   0%|                                                                                                     | 0/1 [00:00<?, ?it/s[
+Rank 0] Step 1, Loss: 0.9413                                                                                    | 0/39 [00:00<?, ?it/s]
+/users/ea7214/.local/lib/python3.10/site-packages/pytorch_transformers/optimization.py:166: UserWarning: This overload of add_ is deprecated:
+        add_(Number alpha, Tensor other)
+Consider using one of the following signatures instead:
+        add_(Tensor other, *, Number alpha = 1) (Triggered internally at ../torch/csrc/utils/python_arg_parser.cpp:1642.)
+  exp_avg.mul_(beta1).add_(1.0 - beta1, grad)
+                                                                                                                                      [
+Rank 0] Step 2, Loss: 0.8929                                                                            | 1/39 [00:11<07:29, 11.83s/it]
+                                                                                                                                      [
+Rank 0] Step 3, Loss: 0.6499                                                                            | 2/39 [00:16<04:31,  7.32s/it]
+                                                                                                                                      [
+Rank 0] Step 4, Loss: 0.6083                                                                            | 3/39 [00:20<03:38,  6.08s/it]
+                                                                                                                                      [
+Rank 0] Step 5, Loss: 0.7482                                                                            | 4/39 [00:24<03:04,  5.26s/it]
+                                                                                                                                      [
+Rank 0] Step 6, Loss: 0.7163                                                                            | 5/39 [00:28<02:42,  4.79s/it]
+                                                                                                                                      [
+Rank 0] Step 7, Loss: 0.7122█▌                                                                          | 6/39 [00:32<02:24,  4.38s/it]
+                                                                                                                                      [
+Rank 0] Step 8, Loss: 0.7204███▊                                                                        | 7/39 [00:35<02:13,  4.17s/it]
+                                                                                                                                      [
+Rank 0] Step 9, Loss: 0.6837██████                                                                      | 8/39 [00:39<02:04,  4.03s/it]
+                                                                                                                                      [
+Rank 0] Step 10, Loss: 0.7026███████▎                                                                   | 9/39 [00:43<01:57,  3.92s/it]
+                                                                                                                                      [
+Rank 0] Step 11, Loss: 0.6743█████████▎                                                                | 10/39 [00:46<01:51,  3.85s/it]
+                                                                                                                                      [
+Rank 0] Step 12, Loss: 0.6346███████████▌                                                              | 11/39 [00:50<01:44,  3.75s/it]
+                                                                                                                                      [
+Rank 0] Step 13, Loss: 0.7356█████████████▊                                                            | 12/39 [00:54<01:40,  3.71s/it]
+                                                                                                                                      [
+Rank 0] Step 14, Loss: 0.7202████████████████                                                          | 13/39 [00:57<01:34,  3.63s/it]
+                                                                                                                                      [
+Rank 0] Step 15, Loss: 0.6969██████████████████▏                                                       | 14/39 [01:00<01:28,  3.53s/it]
+                                                                                                                                      [
+Rank 0] Step 16, Loss: 0.6633████████████████████▍                                                     | 15/39 [01:04<01:26,  3.61s/it]
+                                                                                                                                      [
+Rank 0] Step 17, Loss: 0.7012██████████████████████▋                                                   | 16/39 [01:08<01:23,  3.64s/it]
+                                                                                                                                      [
+Rank 0] Step 18, Loss: 0.6528████████████████████████▉                                                 | 17/39 [01:12<01:22,  3.73s/it]
+                                                                                                                                      [
+Rank 0] Step 19, Loss: 0.6857███████████████████████████▏                                              | 18/39 [01:15<01:15,  3.61s/it]
+                                                                                                                                      [
+Rank 0] Step 20, Loss: 0.6888█████████████████████████████▍                                            | 19/39 [01:18<01:10,  3.53s/it]
+                                                                                                                                      [
+Rank 0] Step 21, Loss: 0.6908███████████████████████████████▌                                          | 20/39 [01:22<01:06,  3.50s/it]
+                                                                                                                                      [
+Rank 0] Step 22, Loss: 0.6994█████████████████████████████████▊                                        | 21/39 [01:25<01:02,  3.46s/it]
+                                                                                                                                      [
+Rank 0] Step 23, Loss: 0.6756████████████████████████████████████                                      | 22/39 [01:29<00:58,  3.42s/it]
+                                                                                                                                      [
+Rank 0] Step 24, Loss: 0.6688██████████████████████████████████████▎                                   | 23/39 [01:32<00:54,  3.42s/it]
+                                                                                                                                      [
+Rank 0] Step 25, Loss: 0.6766████████████████████████████████████████▌                                 | 24/39 [01:36<00:51,  3.45s/it]
+                                                                                                                                      [
+Rank 0] Step 26, Loss: 0.6722██████████████████████████████████████████▊                               | 25/39 [01:39<00:48,  3.49s/it]
+                                                                                                                                      [
+Rank 0] Step 27, Loss: 0.6468█████████████████████████████████████████████                             | 26/39 [01:43<00:45,  3.49s/it]
+                                                                                                                                      [
+Rank 0] Step 28, Loss: 0.6363███████████████████████████████████████████████▏                          | 27/39 [01:46<00:41,  3.45s/it]
+                                                                                                                                      [
+Rank 0] Step 29, Loss: 0.6307█████████████████████████████████████████████████▍                        | 28/39 [01:49<00:37,  3.40s/it]
+                                                                                                                                      [
+Rank 0] Step 30, Loss: 0.6405███████████████████████████████████████████████████▋                      | 29/39 [01:53<00:34,  3.41s/it]
+                                                                                                                                      [
+Rank 0] Step 31, Loss: 0.7168█████████████████████████████████████████████████████▉                    | 30/39 [01:56<00:30,  3.34s/it]
+                                                                                                                                      [
+Rank 0] Step 32, Loss: 0.6875████████████████████████████████████████████████████████▏                 | 31/39 [01:59<00:26,  3.33s/it]
+                                                                                                                                      [
+Rank 0] Step 33, Loss: 0.6786██████████████████████████████████████████████████████████▍               | 32/39 [02:03<00:23,  3.34s/it]
+                                                                                                                                      [
+Rank 0] Step 34, Loss: 0.7177████████████████████████████████████████████████████████████▌             | 33/39 [02:06<00:20,  3.35s/it]
+                                                                                                                                      [
+Rank 0] Step 35, Loss: 0.7195██████████████████████████████████████████████████████████████▊           | 34/39 [02:09<00:16,  3.38s/it]
+                                                                                                                                      [
+Rank 0] Step 36, Loss: 0.6533█████████████████████████████████████████████████████████████████         | 35/39 [02:13<00:13,  3.37s/it]
+                                                                                                                                      [
+Rank 0] Step 37, Loss: 0.6593███████████████████████████████████████████████████████████████████▎      | 36/39 [02:16<00:10,  3.36s/it]
+                                                                                                                                      [
+Rank 0] Step 38, Loss: 0.7123█████████████████████████████████████████████████████████████████████▌    | 37/39 [02:20<00:06,  3.41s/it]
+                                                                                                                                      [
+Rank 0] Step 39, Loss: 0.6418███████████████████████████████████████████████████████████████████████▊  | 38/39 [02:23<00:03,  3.39s/it]
+Iteration: 100%|███████████████████████████████████████████████████████████████████████████████████████| 39/39 [02:26<00:00,  3.76s/it]
+03/06/2026 10:15:18 - INFO - __main__ -   Creating features from dataset file at /users/ea7214/glue_data/RTE39 [02:26<00:00,  3.38s/it]
+03/06/2026 10:15:18 - INFO - utils_glue -   Writing example 0 of 277
+03/06/2026 10:15:18 - INFO - utils_glue -   *** Example ***
+03/06/2026 10:15:18 - INFO - utils_glue -   guid: dev-0
+03/06/2026 10:15:18 - INFO - utils_glue -   tokens: [CLS] Dana Reeve , the widow of the actor Christopher Reeve , has died of lung cancer at age 44 , according to the Christopher Reeve Foundation . [SEP] Christopher Reeve had an accident . [SEP]
+03/06/2026 10:15:18 - INFO - utils_glue -   input_ids: 101 11422 26034 117 1103 8244 1104 1103 2811 4978 26034 117 1144 1452 1104 13093 4182 1120 1425 3140 117 2452 1106 1103 4978 26034 2974 119 102 4978 26034 1125 1126 4216 119 102 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+03/06/2026 10:15:18 - INFO - utils_glue -   input_mask: 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+03/06/2026 10:15:18 - INFO - utils_glue -   segment_ids: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 1 1 1 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+03/06/2026 10:15:18 - INFO - utils_glue -   label: not_entailment (id = 1)
+03/06/2026 10:15:18 - INFO - utils_glue -   *** Example ***
+03/06/2026 10:15:18 - INFO - utils_glue -   guid: dev-1
+03/06/2026 10:15:18 - INFO - utils_glue -   tokens: [CLS] Yet , we now are discovering that anti ##biotics are losing their effectiveness against illness . Disease - causing bacteria are m ##uta ##ting faster than we can come up with new anti ##biotics to fight the new variations . [SEP] Ba ##cter ##ia is winning the war against anti ##biotics . [SEP]
+03/06/2026 10:15:18 - INFO - utils_glue -   input_ids: 101 6355 117 1195 1208 1132 15137 1115 2848 25523 1132 3196 1147 12949 1222 6946 119 20012 118 3989 10548 1132 182 15012 1916 4946 1190 1195 1169 1435 1146 1114 1207 2848 25523 1106 2147 1103 1207 9138 119 102 18757 25857 1465 1110 2183 1103 1594 1222 2848 25523 119 102 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+03/06/2026 10:15:18 - INFO - utils_glue -   input_mask: 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+03/06/2026 10:15:18 - INFO - utils_glue -   segment_ids: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+03/06/2026 10:15:18 - INFO - utils_glue -   label: entailment (id = 0)
+03/06/2026 10:15:18 - INFO - utils_glue -   *** Example ***
+03/06/2026 10:15:18 - INFO - utils_glue -   guid: dev-2
+03/06/2026 10:15:18 - INFO - utils_glue -   tokens: [CLS] Cairo is now home to some 15 million people - a b ##urge ##oning population that produces approximately 10 , 000 tonnes of rub ##bish per day , putting an enormous strain on public services . In the past 10 years , the government has tried hard to encourage private investment in the refuse sector , but some estimate 4 , 000 tonnes of waste is left behind every day , f ##ester ##ing in the heat as it waits for someone to clear it up . It is often the people in the poor ##est neighbourhood ##s that are worst affected . But in some areas they are fighting back . In [SEP] 15 million tonnes of rub ##bish are produced daily in Cairo . [SEP]
+03/06/2026 10:15:18 - INFO - utils_glue -   input_ids: 101 11086 1110 1208 1313 1106 1199 1405 1550 1234 118 170 171 27793 10087 1416 1115 6570 2324 1275 117 1288 10992 1104 16259 26652 1679 1285 117 4518 1126 7883 10512 1113 1470 1826 119 1130 1103 1763 1275 1201 117 1103 1433 1144 1793 1662 1106 8343 2029 5151 1107 1103 10250 4291 117 1133 1199 10301 125 117 1288 10992 1104 5671 1110 1286 1481 1451 1285 117 175 12831 1158 1107 1103 3208 1112 1122 24344 1111 1800 1106 2330 1122 1146 119 1135 1110 1510 1103 1234 1107 1103 2869 2556 11685 1116 1115 1132 4997 4634 119 1252 1107 1199 1877 1152 1132 2935 1171 119 1130 102 1405 1550 10992 1104 16259 26652 1132 1666 3828 1107 11086 119 102
+03/06/2026 10:15:18 - INFO - utils_glue -   input_mask: 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+03/06/2026 10:15:18 - INFO - utils_glue -   segment_ids: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1
+03/06/2026 10:15:18 - INFO - utils_glue -   label: not_entailment (id = 1)
+03/06/2026 10:15:18 - INFO - utils_glue -   *** Example ***
+03/06/2026 10:15:18 - INFO - utils_glue -   guid: dev-3
+03/06/2026 10:15:18 - INFO - utils_glue -   tokens: [CLS] The Am ##ish community in Pennsylvania , which numbers about 55 , 000 , lives an a ##grarian lifestyle , s ##hun ##ning technological advances like electricity and automobiles . And many say their ins ##ular lifestyle gives them a sense that they are protected from the violence of American society . But as residents gathered near the school , some wearing traditional g ##ar ##b and arriving in horse - drawn bug ##gies , they said that sense of safety had been shattered . " If someone snaps and wants to do something stupid , there ' s no distance that ' s going to stop them , " said Jake [SEP] Pennsylvania has the biggest Am ##ish community in the U . S . [SEP]
+03/06/2026 10:15:18 - INFO - utils_glue -   input_ids: 101 1109 7277 2944 1661 1107 2680 117 1134 2849 1164 3731 117 1288 117 2491 1126 170 25873 9897 117 188 17315 3381 12675 11823 1176 6495 1105 23338 119 1262 1242 1474 1147 22233 5552 9897 3114 1172 170 2305 1115 1152 1132 4921 1121 1103 4289 1104 1237 2808 119 1252 1112 3159 5260 1485 1103 1278 117 1199 3351 2361 176 1813 1830 1105 7190 1107 3241 118 3795 15430 19310 117 1152 1163 1115 2305 1104 3429 1125 1151 11670 119 107 1409 1800 22675 1105 3349 1106 1202 1380 4736 117 1175 112 188 1185 2462 1115 112 188 1280 1106 1831 1172 117 107 1163 4387 102 2680 1144 1103 4583 7277 2944 1661 1107 1103 158 119 156 119 102
+03/06/2026 10:15:18 - INFO - utils_glue -   input_mask: 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+03/06/2026 10:15:18 - INFO - utils_glue -   segment_ids: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+03/06/2026 10:15:18 - INFO - utils_glue -   label: not_entailment (id = 1)
+03/06/2026 10:15:18 - INFO - utils_glue -   *** Example ***
+03/06/2026 10:15:18 - INFO - utils_glue -   guid: dev-4
+03/06/2026 10:15:18 - INFO - utils_glue -   tokens: [CLS] Security forces were on high alert after an election campaign in which more than 1 , 000 people , including seven election candidates , have been killed . [SEP] Security forces were on high alert after a campaign marred by violence . [SEP]
+03/06/2026 10:15:18 - INFO - utils_glue -   input_ids: 101 4354 2088 1127 1113 1344 10427 1170 1126 1728 2322 1107 1134 1167 1190 122 117 1288 1234 117 1259 1978 1728 4765 117 1138 1151 1841 119 102 4354 2088 1127 1113 1344 10427 1170 170 2322 27767 1118 4289 119 102 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+03/06/2026 10:15:18 - INFO - utils_glue -   input_mask: 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+03/06/2026 10:15:18 - INFO - utils_glue -   segment_ids: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+03/06/2026 10:15:18 - INFO - utils_glue -   label: entailment (id = 0)
+03/06/2026 10:15:19 - INFO - __main__ -   Saving features into cached file /users/ea7214/glue_data/RTE/cached_dev_bert-base-cased_128_rte
+03/06/2026 10:15:19 - INFO - __main__ -   ***** Running evaluation  *****
+03/06/2026 10:15:19 - INFO - __main__ -     Num examples = 277
+03/06/2026 10:15:19 - INFO - __main__ -     Batch size = 8
+Evaluating: 100%|██████████████████████████████████████████████████████████████████████████████████████| 35/35 [00:11<00:00,  2.92it/s]
+03/06/2026 10:15:31 - INFO - __main__ -   ***** Eval results  *****████████████████████████████████████| 35/35 [00:11<00:00,  3.19it/s]
+03/06/2026 10:15:31 - INFO - __main__ -     acc = 0.5956678700361011
+Epoch:   0%|                                                                                                     | 0/1 [02:39<?, ?it/s]
+[rank0]: Traceback (most recent call last):
+[rank0]:   File "/users/ea7214/COS568-DistLM-SP26/run_glue_2b.py", line 484, in <module>
+[rank0]:     main()
+[rank0]:   File "/users/ea7214/COS568-DistLM-SP26/run_glue_2b.py", line 471, in main
+[rank0]:     global_step, tr_loss = train(args, train_dataset, model, tokenizer)
+[rank0]:   File "/users/ea7214/COS568-DistLM-SP26/run_glue_2b.py", line 232, in train
+[rank0]:     dist.barrier()
+[rank0]:   File "/users/ea7214/.local/lib/python3.10/site-packages/torch/distributed/c10d_logger.py", line 83, in wrapper
+[rank0]:     return func(*args, **kwargs)
+[rank0]:   File "/users/ea7214/.local/lib/python3.10/site-packages/torch/distributed/distributed_c10d.py", line 4164, in barrier
+[rank0]:     work.wait()
+[rank0]: RuntimeError: [../third_party/gloo/gloo/transport/tcp/pair.cc:534] Connection closed by peer [128.105.144.165]:51361
+ea7214@node-0:~/COS568-DistLM-SP26$ 

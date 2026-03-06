@@ -1,0 +1,97 @@
+ea7214@node-2:~/COS568-DistLM-SP26$ export GLUE_DIR=$HOME/glue_data
+export TASK_NAME=RTE
+export MASTER_IP=10.10.1.2
+
+python run_glue_dist.py \
+  --model_type bert \
+  --model_name_or_path bert-base-cased \
+  --task_name $TASK_NAME \
+  --do_train --do_eval \
+  --data_dir $GLUE_DIR/$TASK_NAME \
+  --output_dir /tmp/$TASK_NAME/ \
+  --max_seq_length 128 \
+  --per_device_train_batch_size 16 \
+  --learning_rate 2e-5 \
+  --num_train_epochs 1 \
+  --overwrite_output_dir \
+  --master_ip $MASTER_IP \
+  --master_port 29500 \
+  --world_size 4 \
+  --local_rank 2
+[W305 16:11:47.170761665 TCPStore.cpp:141] [c10d] recvValue failed on SocketImpl(fd=3, addr=[node-2-link-0]:52616, remote=[node-0-link-0]:29500): Connection reset by peer
+Exception raised from recvBytes at ../torch/csrc/distributed/c10d/Utils.hpp:667 (most recent call first):
+frame #0: c10::Error::Error(c10::SourceLocation, std::string) + 0x96 (0x7fc0b8f5e276 in /users/ea7214/.local/lib/python3.10/site-packages/torch/lib/libc10.so)
+frame #1: <unknown function> + 0x60d0776 (0x7fc0a9092776 in /users/ea7214/.local/lib/python3.10/site-packages/torch/lib/libtorch_cpu.so)
+frame #2: <unknown function> + 0x60d2bcb (0x7fc0a9094bcb in /users/ea7214/.local/lib/python3.10/site-packages/torch/lib/libtorch_cpu.so)
+frame #3: c10d::TCPStore::ping() + 0x92 (0x7fc0a908d952 in /users/ea7214/.local/lib/python3.10/site-packages/torch/lib/libtorch_cpu.so)
+frame #4: c10d::TCPStore::TCPStore(std::string, c10d::TCPStoreOptions const&) + 0x357 (0x7fc0a9090407 in /users/ea7214/.local/lib/python3.10/site-packages/torch/lib/libtorch_cpu.so)
+frame #5: <unknown function> + 0xd5bf0d (0x7fc0b8687f0d in /users/ea7214/.local/lib/python3.10/site-packages/torch/lib/libtorch_python.so)
+frame #6: <unknown function> + 0x4cf1a4 (0x7fc0b7dfb1a4 in /users/ea7214/.local/lib/python3.10/site-packages/torch/lib/libtorch_python.so)
+<omitting python frames>
+frame #13: <unknown function> + 0x4cd9fb (0x7fc0b7df99fb in /users/ea7214/.local/lib/python3.10/site-packages/torch/lib/libtorch_python.so)
+frame #40: <unknown function> + 0x29d90 (0x7fc12005dd90 in /lib/x86_64-linux-gnu/libc.so.6)
+frame #41: __libc_start_main + 0x80 (0x7fc12005de40 in /lib/x86_64-linux-gnu/libc.so.6)
+
+[W305 16:11:47.186306874 TCPStore.cpp:358] [c10d] TCP client failed to connect/validate to host 10.10.1.2:29500 - retrying (try=0, timeout=1800000ms, delay=560ms): Connection reset by peer
+Exception raised from recvBytes at ../torch/csrc/distributed/c10d/Utils.hpp:667 (most recent call first):
+frame #0: c10::Error::Error(c10::SourceLocation, std::string) + 0x96 (0x7fc0b8f5e276 in /users/ea7214/.local/lib/python3.10/site-packages/torch/lib/libc10.so)
+frame #1: <unknown function> + 0x60d0776 (0x7fc0a9092776 in /users/ea7214/.local/lib/python3.10/site-packages/torch/lib/libtorch_cpu.so)
+frame #2: <unknown function> + 0x60d2bcb (0x7fc0a9094bcb in /users/ea7214/.local/lib/python3.10/site-packages/torch/lib/libtorch_cpu.so)
+frame #3: c10d::TCPStore::ping() + 0x92 (0x7fc0a908d952 in /users/ea7214/.local/lib/python3.10/site-packages/torch/lib/libtorch_cpu.so)
+frame #4: c10d::TCPStore::TCPStore(std::string, c10d::TCPStoreOptions const&) + 0x357 (0x7fc0a9090407 in /users/ea7214/.local/lib/python3.10/site-packages/torch/lib/libtorch_cpu.so)
+frame #5: <unknown function> + 0xd5bf0d (0x7fc0b8687f0d in /users/ea7214/.local/lib/python3.10/site-packages/torch/lib/libtorch_python.so)
+frame #6: <unknown function> + 0x4cf1a4 (0x7fc0b7dfb1a4 in /users/ea7214/.local/lib/python3.10/site-packages/torch/lib/libtorch_python.so)
+<omitting python frames>
+frame #13: <unknown function> + 0x4cd9fb (0x7fc0b7df99fb in /users/ea7214/.local/lib/python3.10/site-packages/torch/lib/libtorch_python.so)
+frame #40: <unknown function> + 0x29d90 (0x7fc12005dd90 in /lib/x86_64-linux-gnu/libc.so.6)
+frame #41: __libc_start_main + 0x80 (0x7fc12005de40 in /lib/x86_64-linux-gnu/libc.so.6)
+
+03/05/2026 16:12:24 - WARNING - __main__ -   Process rank: 2, device: cpu, world_size: 4, 16-bits training: False
+/users/ea7214/.local/lib/python3.10/site-packages/pytorch_transformers/modeling_utils.py:539: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  state_dict = torch.load(resolved_archive_file, map_location='cpu')
+[Rank 2] Step 1, Loss: 0.9055
+/users/ea7214/.local/lib/python3.10/site-packages/pytorch_transformers/optimization.py:166: UserWarning: This overload of add_ is deprecated:
+        add_(Number alpha, Tensor other)
+Consider using one of the following signatures instead:
+        add_(Tensor other, *, Number alpha = 1) (Triggered internally at ../torch/csrc/utils/python_arg_parser.cpp:1642.)
+  exp_avg.mul_(beta1).add_(1.0 - beta1, grad)
+[Rank 2] Step 2, Loss: 0.6797
+[Rank 2] Step 3, Loss: 0.7076
+[Rank 2] Step 4, Loss: 0.6400
+[Rank 2] Step 5, Loss: 0.7028
+[Rank 2] Step 6, Loss: 0.7736
+[Rank 2] Step 7, Loss: 0.6513
+[Rank 2] Step 8, Loss: 0.7510
+[Rank 2] Step 9, Loss: 0.6548
+[Rank 2] Step 10, Loss: 0.7076
+[Rank 2] Step 11, Loss: 0.6589
+[Rank 2] Step 12, Loss: 0.6146
+[Rank 2] Step 13, Loss: 0.6967
+[Rank 2] Step 14, Loss: 0.6983
+[Rank 2] Step 15, Loss: 0.6442
+[Rank 2] Step 16, Loss: 0.6790
+[Rank 2] Step 17, Loss: 0.6519
+[Rank 2] Step 18, Loss: 0.7012
+[Rank 2] Step 19, Loss: 0.6910
+[Rank 2] Step 20, Loss: 0.6754
+[Rank 2] Step 21, Loss: 0.6874
+[Rank 2] Step 22, Loss: 0.7326
+[Rank 2] Step 23, Loss: 0.6204
+[Rank 2] Step 24, Loss: 0.6834
+[Rank 2] Step 25, Loss: 0.6526
+[Rank 2] Step 26, Loss: 0.6799
+[Rank 2] Step 27, Loss: 0.7147
+[Rank 2] Step 28, Loss: 0.7235
+[Rank 2] Step 29, Loss: 0.6682
+[Rank 2] Step 30, Loss: 0.6975
+[Rank 2] Step 31, Loss: 0.6580
+[Rank 2] Step 32, Loss: 0.6506
+[Rank 2] Step 33, Loss: 0.6887
+[Rank 2] Step 34, Loss: 0.6779
+[Rank 2] Step 35, Loss: 0.7074
+[Rank 2] Step 36, Loss: 0.6593
+[Rank 2] Step 37, Loss: 0.6811
+[Rank 2] Step 38, Loss: 0.6950
+[Rank 2] Step 39, Loss: 0.7640
+[Rank 2] Average time per iteration (excluding first): 6.4380s over 38 iterations
+ea7214@node-2:~/COS568-DistLM-SP26$ Connection terminated

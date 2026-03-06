@@ -1,0 +1,72 @@
+ea7214@node-3:~/COS568-DistLM-SP26$ export GLUE_DIR=$HOME/glue_data
+export TASK_NAME=RTE
+export MASTER_IP=10.10.1.2
+
+python run_glue_2b.py \
+  --model_type bert \
+  --model_name_or_path bert-base-cased \
+  --task_name $TASK_NAME \
+  --do_train --do_eval \
+  --data_dir $GLUE_DIR/$TASK_NAME \
+  --output_dir /tmp/$TASK_NAME/ \
+  --max_seq_length 128 \
+  --per_device_train_batch_size 16 \
+  --learning_rate 2e-5 \
+  --num_train_epochs 1 \
+  --overwrite_output_dir \
+  --master_ip $MASTER_IP \
+  --master_port 29502 \
+  --world_size 4 \
+  --local_rank 3
+03/06/2026 10:12:14 - WARNING - __main__ -   Process rank: 3, device: cpu, world_size: 4, 16-bits training: False
+100%|█████████████████████████████████████████████████████████████████████████████████████████████| 433/433 [00:00<00:00, 790310.54B/s]
+100%|██████████████████████████████████████████████████████████████████████████████████████| 213450/213450 [00:00<00:00, 3359302.19B/s]
+100%|███████████████████████████████████████████████████████████████████████████████| 435779157/435779157 [00:10<00:00, 41092075.30B/s]
+/users/ea7214/.local/lib/python3.10/site-packages/pytorch_transformers/modeling_utils.py:539: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  state_dict = torch.load(resolved_archive_file, map_location='cpu')
+[Rank 3] Step 1, Loss: 0.6244
+/users/ea7214/.local/lib/python3.10/site-packages/pytorch_transformers/optimization.py:166: UserWarning: This overload of add_ is deprecated:
+        add_(Number alpha, Tensor other)
+Consider using one of the following signatures instead:
+        add_(Tensor other, *, Number alpha = 1) (Triggered internally at ../torch/csrc/utils/python_arg_parser.cpp:1642.)
+  exp_avg.mul_(beta1).add_(1.0 - beta1, grad)
+[Rank 3] Step 2, Loss: 0.6271
+[Rank 3] Step 3, Loss: 0.7331
+[Rank 3] Step 4, Loss: 0.7530
+[Rank 3] Step 5, Loss: 0.7702
+[Rank 3] Step 6, Loss: 0.7853
+[Rank 3] Step 7, Loss: 0.6774
+[Rank 3] Step 8, Loss: 0.7240
+[Rank 3] Step 9, Loss: 0.6956
+[Rank 3] Step 10, Loss: 0.7058
+[Rank 3] Step 11, Loss: 0.7348
+[Rank 3] Step 12, Loss: 0.7404
+[Rank 3] Step 13, Loss: 0.6912
+[Rank 3] Step 14, Loss: 0.6839
+[Rank 3] Step 15, Loss: 0.6943
+[Rank 3] Step 16, Loss: 0.7235
+[Rank 3] Step 17, Loss: 0.6868
+[Rank 3] Step 18, Loss: 0.7015
+[Rank 3] Step 19, Loss: 0.6868
+[Rank 3] Step 20, Loss: 0.6635
+[Rank 3] Step 21, Loss: 0.6566
+[Rank 3] Step 22, Loss: 0.6319
+[Rank 3] Step 23, Loss: 0.7326
+[Rank 3] Step 24, Loss: 0.6638
+[Rank 3] Step 25, Loss: 0.6737
+[Rank 3] Step 26, Loss: 0.7447
+[Rank 3] Step 27, Loss: 0.7010
+[Rank 3] Step 28, Loss: 0.6628
+[Rank 3] Step 29, Loss: 0.7232
+[Rank 3] Step 30, Loss: 0.6135
+[Rank 3] Step 31, Loss: 0.6877
+[Rank 3] Step 32, Loss: 0.6324
+[Rank 3] Step 33, Loss: 0.6903
+[Rank 3] Step 34, Loss: 0.6070
+[Rank 3] Step 35, Loss: 0.6719
+[Rank 3] Step 36, Loss: 0.6596
+[Rank 3] Step 37, Loss: 0.6990
+[Rank 3] Step 38, Loss: 0.6584
+[Rank 3] Step 39, Loss: 0.6861
+[Rank 3] Average time per iteration (excluding first): 3.5525s over 38 iterations
+ea7214@node-3:~/COS568-DistLM-SP26$ 
